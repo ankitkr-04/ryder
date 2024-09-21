@@ -2,6 +2,7 @@ import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import OAuth from "@/components/OAuth";
 import { icons, images } from "@/constants";
+import { fetchAPI } from "@/lib/fetch";
 import { useSignUp } from "@clerk/clerk-expo";
 import { Link, router } from "expo-router";
 import { useState } from "react";
@@ -9,7 +10,6 @@ import { Alert, Image, ScrollView, Text, View } from "react-native";
 import ReactNativeModal from "react-native-modal";
 const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
-  const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -24,9 +24,7 @@ const SignUp = () => {
   });
 
   const onSignUpPress = async () => {
-    setLoading(true);
     if (!isLoaded) {
-      setLoading(false);
       return;
     }
 
@@ -41,8 +39,6 @@ const SignUp = () => {
       setVerification({ ...verification, state: "pending" });
     } catch (err: any) {
       Alert.alert("Error", err.errors[0].longMessage);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -55,7 +51,15 @@ const SignUp = () => {
       });
 
       if (completeSignUp.status === "complete") {
-        // todo create db user
+        // Store in DB
+        await fetchAPI("/(api)/user", {
+          method: "POST",
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            clerkId: completeSignUp.createdUserId,
+          }),
+        });
         await setActive({ session: completeSignUp.createdSessionId });
         setVerification({ ...verification, state: "success" });
       } else {
@@ -112,7 +116,6 @@ const SignUp = () => {
             title="Sign Up"
             onPress={onSignUpPress}
             className="mt-6"
-            disabled={loading}
           />
 
           <OAuth />
