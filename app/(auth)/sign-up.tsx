@@ -99,7 +99,7 @@ const SignUp = () => {
 
           <InputField
             label="Email"
-            placeholder="Enter Your EMail"
+            placeholder="Enter Your Email"
             icon={icons.email}
             value={form.email}
             onChangeText={(value) => setForm({ ...form, email: value })}

@@ -35,7 +35,7 @@ const SignIn = () => {
     } catch (err: any) {
       console.error(JSON.stringify(err, null, 2));
     }
-  }, [isLoaded, form.email, form.password]);
+  }, [isLoaded, signIn, form.email, form.password, setActive, router]);
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
@@ -49,7 +49,7 @@ const SignIn = () => {
         <View className="p-5">
           <InputField
             label="Email"
-            placeholder="Enter Your EMail"
+            placeholder="Enter Your Email"
             icon={icons.email}
             value={form.email}
             onChangeText={(value) => setForm({ ...form, email: value })}
@@ -63,7 +63,7 @@ const SignIn = () => {
           />
 
           <CustomButton
-            title="Sign Up"
+            title="Sign In"
             onPress={onSignInPress}
             className="mt-6"
           />
