@@ -3,6 +3,7 @@ import { ClerkLoaded, ClerkProvider } from "@clerk/clerk-expo";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import React, { useEffect } from "react";
+import { LogBox } from "react-native";
 
 SplashScreen.hideAsync();
 
@@ -10,6 +11,8 @@ const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
 if (!publishableKey) {
   throw new Error("Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY");
 }
+
+LogBox.ignoreLogs(["Warning: ...", "Clerk:"]); // Ignore log notification by message
 
 export default function RootLayout() {
   const [loaded] = useFonts({

@@ -70,8 +70,8 @@ export default function Page() {
   return (
     <SafeAreaView className="bg-general-500">
       <FlatList
-        data={recentRides}
-        renderItem={({ item }) => <RideCard ride={item} key={item.ride_id} />}
+        data={recentRides?.slice(0, 5)}
+        renderItem={({ item }) => <RideCard ride={item} />}
         className="px-5"
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{ paddingBottom: 100 }}
